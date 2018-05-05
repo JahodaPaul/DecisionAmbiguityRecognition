@@ -1,0 +1,42 @@
+## Deep learning AI, that recognizes when are people uncertain. 
+
+
+### How to Install:
+
+After you have installed python3 (3.6), virtualenv (sudo apt install virtualenv) and ffmpeg run these commands:
+
+```
+virtualenv -p python3 env
+source env/bin/activate
+pip3 install -r requirements.txt
+```
+
+### How to use:
+```
+python3 src/main.py x
+```
+
+
+Where x is youtube video URL or several youtube video URL's separeted by space
+
+Once the program finished detecting decision ambiguity from facial images, you will have video in folder OutputVideos and csv file in OutputInformation.
+
+In the output video, decision ambiguity is marked by red rectangle around person's face. Gray rectangle around person's face occurs, when our AI determined that person is not ambiguous. All the other instances when facial images aren't surrounded by rectangle, are simply not used by our AI either because face_recognition did not recognize facial images, or the section with facial image was too short.
+
+In the output csv file, you will find sections of decision ambiguity.
+Format: x, y
+
+x = hours:minutes:seconds:centiseconds representing start of section with decision ambiguity<br/>
+y = hours:minutes:seconds:centiseconds representing end of section with decision ambiguity 
+
+
+### Requirements
+
+- ffmpeg
+- python3.6
+- virtualenv
+
+
+### Publication
+[Link to publication](ftp://cmp.felk.cvut.cz/pub/cmp/articles/cech/Jahoda-FG-2018.pdf)<br/>
+[Link to dataset](http://cmp.felk.cvut.cz/~jahodpa1/millionaire/)

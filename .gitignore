@@ -1,0 +1,16 @@
+/Bags/
+/Bags2/
+/Bags3/
+/Bags4/
+/Nothing/
+/__pycache__/
+/FacialImagesFromVideo/
+*.png
+*.mp4
+*.mkv
+*.m4a
+src/__pycache__/
+/OutputVideos/
+/OutputInformation/
+/env/
+*.hdf5
