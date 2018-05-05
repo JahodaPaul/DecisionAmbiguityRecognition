@@ -38,5 +38,5 @@ y = hours:minutes:seconds:centiseconds representing end of section with decision
 
 
 ### Publication
-[Link to publication](ftp://cmp.felk.cvut.cz/pub/cmp/articles/cech/Jahoda-FG-2018.pdf)<br/>
+[Link to publication](bit.ly/2rotkUJ) <br/>
 [Link to dataset](http://cmp.felk.cvut.cz/~jahodpa1/millionaire/)
