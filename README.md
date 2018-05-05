@@ -37,6 +37,7 @@ y = hours:minutes:seconds:centiseconds representing end of section with decision
 - virtualenv
 
 
-### Publication
+### Links
+[Link to video demonstration](https://youtu.be/LNgvCIBq1b4) <br/>
 [Link to publication](bit.ly/2rotkUJ) <br/>
 [Link to dataset](http://cmp.felk.cvut.cz/~jahodpa1/millionaire/)
