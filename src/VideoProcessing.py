@@ -280,7 +280,7 @@ class VideoProcessing:
         nameNotTaken = ''
         counter = 0
         while True:
-            if not os.path.exists(dir+'/'+name+str(counter)+'.mp4'):
+            if not os.path.exists(dir+'/'+name+str(counter)+'.mkv'):
                 nameNotTaken = name+str(counter)+'.mp4'
                 break
             counter += 1

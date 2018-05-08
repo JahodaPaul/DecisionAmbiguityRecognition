@@ -83,7 +83,7 @@ class DownloadVideo:
         pathToOutput = videoPath.split('/')[0]
         outputVideoName = videoName.split('.')[0]
         finalOutput = pathToOutput+'/'+outputVideoName
-        commandToCall = 'ffmpeg -loglevel panic -i '+videoPath+' -i '+self.audioTitle+' -c copy '+finalOutput+'.mp4'
+        commandToCall = 'ffmpeg -loglevel panic -i '+videoPath+' -i '+self.audioTitle+' -c copy '+finalOutput+'.mkv'
         processOne = subprocess.call(commandToCall.split(' '))
         if os.path.exists(videoPath):
             os.remove(videoPath)
