@@ -1,4 +1,4 @@
-## Deep learning AI, that recognizes when are people uncertain. 
+## Deep learning AI, that recognizes when are people uncertain.  [![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)](https://github.com/dwyl/esta/issues)
 
 
 ### How to Install:
