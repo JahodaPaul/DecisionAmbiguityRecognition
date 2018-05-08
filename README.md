@@ -3,7 +3,7 @@
 
 ### How to Install:
 
-After you have installed python3 (3.6), virtualenv (sudo apt install virtualenv) and ffmpeg run these commands:
+After you have installed python3 (3.6), virtualenv (sudo apt install virtualenv) and ffmpeg, clone this repository and in the cloned directory DecisionAmbiguityRecognition run these commands:
 
 ```
 virtualenv -p python3 env
@@ -13,11 +13,11 @@ pip3 install -r requirements.txt
 
 ### How to use:
 ```
-python3 src/main.py x
+python3 src/main.py url
 ```
 
 
-Where x is youtube video URL or several youtube video URL's separeted by space
+Where url is youtube video URL or several youtube video URL's separeted by space
 
 Once the program finished detecting decision ambiguity from facial images, you will have video in folder OutputVideos and csv file in OutputInformation.
 
