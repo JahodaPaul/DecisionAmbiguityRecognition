@@ -12,6 +12,8 @@ pip3 install -r requirements.txt
 ```
 
 ### How to use:
+Activate virtual environment( source env/bin/activate ) and the run:
+
 ```
 python3 src/main.py url
 ```
@@ -35,6 +37,7 @@ y = hours:minutes:seconds:centiseconds representing end of section with decision
 - ffmpeg
 - python3.6
 - virtualenv
+- cmake
 
 
 ### Links
