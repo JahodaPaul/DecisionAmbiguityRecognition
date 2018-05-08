@@ -280,7 +280,7 @@ class VideoProcessing:
         nameNotTaken = ''
         counter = 0
         while True:
-            if not os.path.exists(dir+'/'+name+str(counter)+'.mkv'):
+            if not os.path.exists(dir+'/'+name+str(counter)+'.mp4'):
                 nameNotTaken = name+str(counter)+'.mp4'
                 break
             counter += 1
@@ -326,7 +326,7 @@ class VideoProcessing:
 
         self.nameNotTaken = self.FindUnusedName(self.outVideosDirectory,'output_video')
 
-        fourcc = cv2.VideoWriter_fourcc(*'X264')
+        fourcc = cv2.VideoWriter_fourcc(*'mp4v')
 
         video = cv2.VideoWriter(os.path.join(self.outVideosDirectory,self.nameNotTaken), fourcc, fps, (width, height))
 
