@@ -44,3 +44,14 @@ y = hours:minutes:seconds:centiseconds representing end of section with decision
 [Link to video demonstration](https://youtu.be/LNgvCIBq1b4) <br/>
 [Link to publication](bit.ly/2rotkUJ) <br/>
 [Link to dataset](http://cmp.felk.cvut.cz/~jahodpa1/millionaire/)
+
+### Citation
+Please cite us:
+```
+@InProceedings{detecting_decision_ambiguity_2018,
+  author =       {P. Jahoda, A. Vobecky, J. Cech, J. Matas},
+  title =        {Detecting Decision Ambiguity from Facial Images},
+  booktitle = {IEEE International Conference on Automatic Face and Gesture Recognition},
+  year =      {2018}
+}
+```
