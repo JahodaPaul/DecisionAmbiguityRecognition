@@ -48,8 +48,8 @@ y = hours:minutes:seconds:centiseconds representing end of section with decision
 ### Citation
 Please cite us:
 ```
-@InProceedings{detecting_decision_ambiguity_2018,
-  author =       {P. Jahoda, A. Vobecky, J. Cech, J. Matas},
+@InProceedings{ambiguity2018,
+  author =       {Pavel Jahoda and Antonin Vobecky and Jan Cech and Jiri Matas},
   title =        {Detecting Decision Ambiguity from Facial Images},
   booktitle = {IEEE International Conference on Automatic Face and Gesture Recognition},
   year =      {2018}
