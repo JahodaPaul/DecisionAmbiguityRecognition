@@ -81,10 +81,6 @@ class DetectFaces:
         for location in faceLocations:
             self.ArrayOfFaces.append([str(-1), counter, location[1], (frame.shape[1] - location[0]), location[1] + location[3], frame.shape[1] - (location[0] + location[2])])
 
-        if useFaceSurroundings:
-            for cnt, faceLocation in enumerate(faceLocations):
-                faceLocations[cnt] = self.UseFaceSurroundings(1.5,img.shape[1],img.shape[0],faceLocation[0],faceLocation[1],faceLocation[2],faceLocation[3])
-
 
         for cnt, faceLocation in enumerate(faceLocations):
             face_image = gray[faceLocation[1]:faceLocation[1] + faceLocation[3], faceLocation[0]:faceLocation[0] + faceLocation[2]]
@@ -94,6 +90,10 @@ class DetectFaces:
                 face_image = cv2.resize(face_image, (160, 160), interpolation=cv2.INTER_CUBIC)
 
             cv2.imwrite(dirToOutputFaces + '/' + str(counter) + '_' + str(cnt) + '.png',face_image)
+
+        if useFaceSurroundings:
+            for cnt, faceLocation in enumerate(faceLocations):
+                faceLocations[cnt] = self.UseFaceSurroundings(1.5,img.shape[1],img.shape[0],faceLocation[0],faceLocation[1],faceLocation[2],faceLocation[3])
 
         if zeros == True:
             return faceLocations

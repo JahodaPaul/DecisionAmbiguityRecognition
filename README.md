@@ -23,7 +23,7 @@ Where url is youtube video URL or several youtube video URL's separeted by space
 
 Once the program finished detecting decision ambiguity from facial images, you will have video in folder OutputVideos and csv file in OutputInformation.
 
-In the output video, decision ambiguity is marked by red rectangle around person's face. Gray rectangle around person's face occurs, when our AI determined that person is not ambiguous. All the other instances when facial images aren't surrounded by rectangle, are simply not used by our AI either because face_recognition did not recognize facial images, or the section with facial image was too short.
+In the output video, decision ambiguity is marked by red rectangle around person's face. Gray rectangle around person's face occurs, when our AI determined that person is not ambiguous. All the other instances when facial images aren't surrounded by rectangle, are simply not used by our AI either because dlib did not recognize facial images, or the section with facial image was too short.
 
 In the output csv file, you will find sections of decision ambiguity.
 Format: x, y
@@ -32,15 +32,19 @@ x = hours:minutes:seconds:centiseconds representing start of section with decisi
 y = hours:minutes:seconds:centiseconds representing end of section with decision ambiguity 
 
 ### Options:
-    -k, --keep                      Keep folders with facial images divided by 
+```
+    -k, --keep                      yes/no
+                                    Keep folders with facial images divided by 
                                     identity of the person. Each folder in folder
                                     'Identities' will contain facial images of
                                     one person. The name of the image is frame
                                     number in the video.
-    -o, --only_recognize            Detect and recognize people in video only.
+    -o, --only_recognize            yes/no
+                                    Detect and recognize people in video only.
                                     Each folder in folder 'Identities' will 
                                     contain facial images of one person. The 
                                     name of the image is frame number in the video.
+```
 
 ### Requirements
 
