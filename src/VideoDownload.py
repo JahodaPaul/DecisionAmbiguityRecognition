@@ -1,4 +1,4 @@
-#Pavel Jahoda
+# Code written by Pavel Jahoda
 
 from __future__ import unicode_literals
 import youtube_dl
@@ -48,13 +48,29 @@ class DownloadVideo:
             with open(networkPath, 'wb') as f:
                 f.write(r.content)
 
-            # Retrieve HTTP meta-data
-            print(r.headers['content-type'])
+            print('Done downloading neural net')
+
+        url = 'https://www.dropbox.com/sh/s5s9y9a7axs1oi5/AAA9K3GFjncy0Tvivgbce2-Ba?dl=1'
+        networkPath = './Network/201804_model'
+
+        if not os.path.exists(networkPath):
+            print('Downloading neural network for identification of people')
+            r = requests.get(url)
+
+            with open(networkPath+'.zip', 'wb') as f:
+                f.write(r.content)
+
+            import zipfile
+            zip_ref = zipfile.ZipFile(networkPath+'.zip', 'r')
+            zip_ref.extractall(networkPath)
+            zip_ref.close()
+            os.remove(networkPath+'.zip')
+
             print('Done downloading neural net')
 
     def my_hook(self,d):
         if d['status'] == 'finished':
-            print('Done downloading, now converting ...')
+            pass
 
     def Download(self,url,videoName=''):
         print('Downloading')

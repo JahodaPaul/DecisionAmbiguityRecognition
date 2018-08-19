@@ -31,6 +31,16 @@ Format: x, y
 x = hours:minutes:seconds:centiseconds representing start of section with decision ambiguity<br/>
 y = hours:minutes:seconds:centiseconds representing end of section with decision ambiguity 
 
+### Options:
+    -k, --keep                      Keep folders with facial images divided by 
+                                    identity of the person. Each folder in folder
+                                    'Identities' will contain facial images of
+                                    one person. The name of the image is frame
+                                    number in the video.
+    -o, --only_recognize            Detect and recognize people in video only.
+                                    Each folder in folder 'Identities' will 
+                                    contain facial images of one person. The 
+                                    name of the image is frame number in the video.
 
 ### Requirements
 

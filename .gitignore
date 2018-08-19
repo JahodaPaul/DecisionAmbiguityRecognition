@@ -3,7 +3,7 @@
 /Bags3/
 /Bags4/
 /Nothing/
-/__pycache__/
+**/__pycache__/
 /FacialImagesFromVideo/
 *.png
 *.mp4
@@ -14,3 +14,8 @@ src/__pycache__/
 /OutputInformation/
 /env/
 *.hdf5
+*.locations.p
+*.rectangles.p
+*.rectanglesNoDecisionAmbiguity.p
+**/201804_model/
+**/.idea/

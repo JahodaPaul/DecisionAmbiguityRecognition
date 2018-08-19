@@ -1,14 +1,11 @@
-# Pavel Jahoda
+# Code written by Pavel Jahoda
 
-import face_recognition
 import cv2
-import imageio as im
 import os
 from PIL import Image
 import shutil
 import pickle
 import math
-import numpy as np
 import operator
 
 class VideoProcessing:
@@ -16,15 +13,16 @@ class VideoProcessing:
         self.ArrayOfTimeAndLocations = []
         self.remove = []
 
-    def ResizeAndGrayScale(self,path):
+    def Resize(self,path):
         img = Image.open(path)
         img = img.resize((100, 100), Image.ANTIALIAS)
         img.save(path)
-        img = im.imread(path)
-        img = img[:, :, 0]
-        im.imwrite(path, img)
 
-    def CreateBatches(self,directory):
+    def CreateBatches(self,directory, keep=False):
+        with open('Network/locations.p', 'rb') as f:
+            self.ArrayOfTimeAndLocations = pickle.load(f)
+
+
         BagsDir = 'Bags'
 
         if os.path.exists(BagsDir):
@@ -53,9 +51,11 @@ class VideoProcessing:
                     else:
                         NOfBags += 1
                         os.makedirs(BagsDir + '/' + str(NOfBags))
-                    os.rename(directory + '/' + dir + '/' + str(number) + '.png',
-                              BagsDir + '/' + str(NOfBags) + '/' + str(number) + '.png')
-                    self.ResizeAndGrayScale(BagsDir + '/' + str(NOfBags) + '/' + str(number) + '.png')
+                    if keep==False:
+                        os.rename(directory + '/' + dir + '/' + str(number) + '.png',BagsDir + '/' + str(NOfBags) + '/' + str(number) + '.png')
+                    else:
+                        shutil.copyfile(directory + '/' + dir + '/' + str(number) + '.png',BagsDir + '/' + str(NOfBags) + '/' + str(number) + '.png')
+                    self.Resize(BagsDir + '/' + str(NOfBags) + '/' + str(number) + '.png')
                     for face in self.ArrayOfTimeAndLocations[number]:
                         if face != [] and str(face[0]) == dir:
                             face[0] = str(NOfBags)
@@ -64,7 +64,9 @@ class VideoProcessing:
 
                 NOfBags += 1
 
-
+        if keep == False:
+            if os.path.exists(directory):
+                shutil.rmtree(directory, ignore_errors=False, onerror=None)
 
         bags = os.listdir(BagsDir)
         tmpNumbers = os.listdir(BagsDir)
@@ -107,6 +109,7 @@ class VideoProcessing:
         with open('Network/locations.p', 'wb') as f:
             pickle.dump(self.ArrayOfTimeAndLocations, f)
 
+
         # delete almost empty bags
         bags = os.listdir(BagsDir)
         for bag in bags:
@@ -126,154 +129,6 @@ class VideoProcessing:
                 nOfTrue += 1
         return (math.log( (len(matches)+1) ,2) * float(nOfTrue/float(len(matches))) )
 
-
-    def ProcessVideo(self,durationInSeconds):
-        video_capture = cv2.VideoCapture("input_video.mkv")
-        VideoPicturesInBags = 'FacialImagesFromVideo'
-
-        #nOfFrames = int(video_capture.get(cv2.CAP_PROP_FRAME_COUNT))
-
-        #fps = video_capture.get(cv2.CAP_PROP_FPS)
-        #print('Video has',fps,'frames per second.')
-
-        if os.path.exists(VideoPicturesInBags):
-            shutil.rmtree(VideoPicturesInBags, ignore_errors=False, onerror=None)
-
-        frames = []
-        temporary_frames = []
-        frame_count = 0
-
-        known_face_names = []
-        known_face_encodings = []
-        numberOfPicturesForEachPerson = []
-        toThePowerOfWhat = []
-
-        numberOfPeople = 0
-
-        # This code finds all faces in a list of images using the CNN model.
-
-        height = None;width = None
-        # Open video file
-        framesThatWeMightUse = []
-        counter = 0
-        previouslyContainedFace = False
-
-        while video_capture.isOpened():
-            # Grab a single frame of video
-            ret, frame = video_capture.read()
-
-            # Bail out when the video file ends
-            if not ret:
-                break
-
-            counter += 1
-
-            # Convert the image from BGR color (which OpenCV uses) to RGB color (which face_recognition uses)
-            frame = frame[:, :, ::-1]
-            frames.append(frame)
-            if counter % 2 == 0:
-                height = frame.shape[0]
-                width = frame.shape[1]
-
-                temporary_frames.append(frame)
-            else:
-                framesThatWeMightUse.append(frame)
-
-            frame_count += 1
-
-            # Every 6 frames, batch process the list of frames to find faces
-            if len(frames) == 6:
-
-                temporary_batch_of_face_locations = face_recognition.batch_face_locations(temporary_frames, number_of_times_to_upsample=0)
-                batch_of_face_locations = []
-
-                # process only every seconds frame if number of faces found did not change between the every second frame
-                for frame_number_in_batch, face_locations in enumerate(temporary_batch_of_face_locations):
-                    if (len(face_locations) == 1 and previouslyContainedFace == False ) or (len(face_locations) == 0 and previouslyContainedFace == True):
-                        previouslyContainedFace = not previouslyContainedFace
-                        temporaryFrame = framesThatWeMightUse[frame_number_in_batch]
-                        temporary_batch = face_recognition.batch_face_locations([temporaryFrame], number_of_times_to_upsample=0)
-
-                        batch_of_face_locations.append(temporary_batch[0])
-                        batch_of_face_locations.append(temporary_batch_of_face_locations[frame_number_in_batch])
-                    else:
-                        for i in range(2):
-                            batch_of_face_locations.append(temporary_batch_of_face_locations[frame_number_in_batch])
-
-                # Now let's list all the faces we found in all 6 frames
-                for frame_number_in_batch, face_locations in enumerate(batch_of_face_locations):
-                    number_of_faces_in_frame = len(face_locations)
-
-                    face_encodings = face_recognition.face_encodings(frames[frame_number_in_batch], face_locations)
-
-                    face_names = []
-                    for face_encoding in face_encodings:
-                        # See if the face is a match for the known face(s)
-                        topScore = 0
-                        indexOfTopScore = 0
-                        found = False
-                        for index in range(len(known_face_encodings)):
-                            matches = face_recognition.compare_faces(known_face_encodings[index], face_encoding, tolerance=0.60)
-
-                            tmp = self.Decision(matches)
-                            if tmp>topScore:
-                                topScore = tmp
-                                indexOfTopScore = index
-
-                        if topScore > 0.5:
-                            index = indexOfTopScore
-                            name = known_face_names[index]
-                            found = True
-                            numberOfPicturesForEachPerson[index] += 1
-                            if numberOfPicturesForEachPerson[index] == int(pow(3, toThePowerOfWhat[index])):
-                                toThePowerOfWhat[index] += 1
-                                known_face_encodings[index].append(face_encoding)
-
-
-                        if not found:
-                            name = str(numberOfPeople)
-                            known_face_encodings.append([face_encoding])
-                            known_face_names.append(name)
-                            numberOfPicturesForEachPerson.append(1)
-                            toThePowerOfWhat.append(1)
-                            numberOfPeople += 1
-                        face_names.append(name)
-
-                    frame_number = frame_count - 6 + frame_number_in_batch
-                    print("I found {} face(s) in frame #{}.".format(number_of_faces_in_frame, frame_number))
-                    cnt = 0
-                    temporaryList = []
-                    ArrayOfFaces = []
-                    for face_location in face_locations:
-                        if not os.path.exists(VideoPicturesInBags + '/' + face_names[cnt]):
-                            os.makedirs(VideoPicturesInBags + '/' + face_names[cnt])
-
-                        top, right, bottom, left = face_location
-                        face_image = frames[frame_number_in_batch][top:bottom, left:right]
-                        im.imwrite(VideoPicturesInBags + '/' + face_names[cnt] + '/' + str(frame_number) + '.png',face_image)
-                        temporaryList = [face_names[cnt], frame_number, top, right, bottom, left]
-                        ArrayOfFaces.append(temporaryList)
-
-                        cnt += 1
-
-                    # if temporaryList == []:
-                    #     ArrayOfFaces.append(temporaryList)
-
-                    self.ArrayOfTimeAndLocations.append(ArrayOfFaces)
-
-                    face_names = []
-
-                # Clear the frames array to start the next batch
-                frames = []
-                framesThatWeMightUse = []
-                temporary_frames = []
-
-
-        video_capture.release()
-
-        fps = float(frame_count) / float(durationInSeconds)
-
-        return VideoPicturesInBags, height, width, fps
 
     def FindUnusedName(self,dir,name):
 
@@ -336,7 +191,7 @@ class VideoProcessing:
             if not ret:
                 break
 
-            if frame_count % 30 == 0:
+            if frame_count % 100 == 0:
                 print('frame:',frame_count)
             try:
                 for rectangle in rectangleList: #TODO OPTIMIZE

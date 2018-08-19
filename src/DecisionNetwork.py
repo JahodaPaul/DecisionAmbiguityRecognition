@@ -8,6 +8,7 @@ import pickle
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn import svm
 from math import ceil,floor
+import shutil
 
 
 def findThreshold(pos, neg):
@@ -89,7 +90,7 @@ def computeRes(set):
         imgs = imgs[..., np.newaxis]
         res = model.predict_proba(imgs, batch_size=1, verbose=0)
         posRes.append(res[:, 0])
-        print(i, "/", len(posFolders),' positive folder ',posFolder," with",
+        print(i, "/", len(posFolders),' folder ',posFolder," with",
               len(filelist)," pictures")
         i = i + 1
     nPosCompleted = i
@@ -435,14 +436,6 @@ def TestWholeNewFolder(sequenceObtained, parametersFound, showPictures):
     svc.fit(x_train, y_train)
     classif = svc.predict(x_test)
     dist = svc.decision_function(X=x_test)
-    #diffs = np.sum(abs(np.subtract(classif, y_test)))
-    #correct = np.where(np.subtract(classif, y_test) == 0)
-    #correct = correct[0]
-    #distCorrect = dist[correct]
-    #distCorrect = np.abs(distCorrect)
-    #bestId = distCorrect.argsort()[-5:][::-1]
-    #bestDist = distCorrect[bestId]
-    #err = diffs / len(y_test)
 
     print(classif)
     print(folders)
@@ -489,7 +482,13 @@ def TestWholeNewFolder(sequenceObtained, parametersFound, showPictures):
         pickle.dump(rectangles,f)
 
     with open('Network/rectanglesNoDecisionAmbiguity.p', 'wb') as f:
-        pickle.dump(rectangles,f)
+        pickle.dump(rectanglesNoAmbiguity,f)
+
+    if os.path.exists('Nothing'):
+        shutil.rmtree('Nothing', ignore_errors=False, onerror=None)
+
+    if os.path.exists('Bags'):
+        shutil.rmtree('Bags', ignore_errors=False, onerror=None)
 
     return rectangles, rectanglesNoAmbiguity
 
