@@ -403,9 +403,9 @@ def TestWholeNewFolder(sequenceObtained, parametersFound, showPictures):
     bestDist = []
     outSizeMax = 30
     poolTypes = ['mean','max']
-    train_res = np.load('Network/res_train.p')
-    test_res = np.load('Network/res_test3.p')
-    folders = np.load('./Network/res_test3_folders.p')
+    train_res = np.load('Network/res_train.p',allow_pickle=True)
+    test_res = np.load('Network/res_test3.p',allow_pickle=True)
+    folders = np.load('./Network/res_test3_folders.p',allow_pickle=True)
 
     best_pool = 'max'
     best_size = 13
@@ -497,8 +497,8 @@ def ShowOnlySurvey(showPictures):
 
     best_pool = 'max'
     best_size = 13
-    train_res = np.load('res_train.p')
-    test_res = np.load('res_test20.p')
+    train_res = np.load('res_train.p',allow_pickle=True)
+    test_res = np.load('res_test20.p',allow_pickle=True)
     x_train, y_train = createConstOutput(train_res, poolType=best_pool, outSize=best_size)
     x_test, y_test = createConstOutput(test_res, poolType=best_pool, outSize=best_size)
     test = {'x': x_test, 'y': y_test}
